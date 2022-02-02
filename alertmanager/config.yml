@@ -1,0 +1,113 @@
+route:
+    receiver: 'slack'
+    # group_by: ['instance']
+    # group_wait: 30s
+    # group_interval: 1s
+    # repeat_interval: 24h
+
+#  routes:
+#   - match_re:
+#      env: 'elastic-production'
+#      severity: warning|alert|notify
+#     repeat_interval: 24h
+#     receiver: "Alerts-production-elastic"
+#   - match_re:
+#      env: 'elastic-production'
+#      severity: critical
+#     repeat_interval: 1h
+#     receiver: "Alerts-production-elastic"
+#   - match_re:
+#      env: 'production'
+#      severity: warning|alert|notify
+#     repeat_interval: 24h
+#     receiver: "Alerts-production"
+#   - match_re:
+#      env: 'production'
+#      severity: critical
+#     repeat_interval: 1h
+#     receiver: "Alerts-production"
+#   - match_re:
+#      env: 'testing'
+#      severity: warning|alert|notify
+#     repeat_interval: 24h
+#     receiver: "Alerts-testing"
+#   - match_re:
+#      env: 'testing'
+#      severity: critical
+#     repeat_interval: 1h
+#     receiver: "Alerts-testing"
+
+
+
+receivers:
+    - name: 'slack'
+      slack_configs:
+          - send_resolved: true
+            text: "{{ .CommonAnnotations.description }}"
+            username: 'Prometheus'
+            channel: '#<channel-name>'
+            api_url: 'https://hooks.slack.com/services/<webhook-id>'
+
+
+
+
+  # - name: 'Alerts-production-elastic'
+  #   slack_configs:
+  #   - api_url: 'url'
+  #     username: 'Prometheus'
+  #     channel: '#devops-prod-elastic-alerts'
+  #     http_config:
+       
+  #     title: |-
+  #      [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }} 
+       
+  #     text: >-
+  #      {{ range .Alerts -}}
+  #      *Alert:* {{ .Annotations.summary }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+
+  #      *Description:* {{ .Annotations.description }}
+
+  #      *Details:*
+  #        {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+  #        {{ end }}
+  #      {{ end }}
+ 
+  # - name: 'Alerts-production'
+  #   slack_configs:
+  #   - api_url: ''
+  #     username: 'Prometheus' 
+  #     http_config:
+  #     channel: '#devops-prod-alerts'
+  #     title: |-
+  #      [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+    
+  #     text: >-
+  #      {{ range .Alerts -}}
+  #      *Alert:* {{ .Annotations.summary }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+
+  #      *Description:* {{ .Annotations.description }}
+
+  #      *Details:*
+  #        {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+  #        {{ end }}
+  #      {{ end }}
+
+
+  # - name: 'Alerts-testing'
+  #   slack_configs:
+  #   - api_url: ''
+  #     username: 'Prometheus'
+  #     http_config:
+  #     channel: '#devops-test-alerts'
+  #     title: |-
+  #      [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}      
+  #     text: >-
+  #      {{ range .Alerts -}}
+  #      *Alert:* {{ .Annotations.summary }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+
+  #      *Description:* {{ .Annotations.description }}
+
+  #      *Details:*
+  #        {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+  #        {{ end }}
+  #      {{ end }}
